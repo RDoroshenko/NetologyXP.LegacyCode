@@ -17,20 +17,26 @@ player.showHighScoreList = function(pageToken) {
                 return;
             }
             var root = document.getElementById('highScoreListDiv');
+            //////////////////////////Шов/////////////////////////////
             player.createPlayerList(root, response.items, true);
+            /////////////////////////////////////////////////////////
             if (response.prevPageToken) {
                 root.appendChild(
+                    //////////////////Шов/////////////////////////////
                     utilities.createButton('Prev', response.prevPageToken,
                         function(event) {
                             player.showHighScoreList(event.target.value);
                         }));
+                    ////////////////////////////////////////////////////
             }
             if (response.nextPageToken) {
                 root.appendChild(
+                    //////////////////Шов/////////////////////////////////////
                     utilities.createButton('Prev', response.prevPageToken,
                         function(event) {
                             player.showHighScoreList(event.target.value);
                         }));
+                    //////////////////////////////////////////////////////////
             }
         });
 };

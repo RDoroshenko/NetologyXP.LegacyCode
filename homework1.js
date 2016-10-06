@@ -1,31 +1,38 @@
+////Для избавления от зависимостей предлагается определить новый контекст, в котором сымитировать Window, $(), LoadURL с желаемым поведением
+
 function checkURL() {
 
-    //get the url by removing the hash
-    var url = location.hash.replace(/^#/, '');
+        //get the url by removing the hash
+        ////Зависимость от window//////////////////
+        var url = window.location.hash.replace(/^#/, '');
+        ///////////////////////////////////////////
+        ////////////////jQuery зависимость $////////
+        container = $('#content');
+        //////////////////////////////////////////
+        // Do this if url exists (for page refresh, etc...)
+        if (url) {
+            // remove all active class
+            $('nav li.active').removeClass("active");
+            // match the url and add the active class
+            $('nav li:has(a[href="' + url + '"])').addClass("active");
+            var title = ($('nav a[href="' + url + '"]').attr('title'))
 
-    container = $('#content');
-    // Do this if url exists (for page refresh, etc...)
-    if (url) {
-        // remove all active class
-        $('nav li.active').removeClass("active");
-        // match the url and add the active class
-        $('nav li:has(a[href="' + url + '"])').addClass("active");
-        var title = ($('nav a[href="' + url + '"]').attr('title'))
+            // change page title from global var
+            document.title = (title || document.title);
+            //console.log("page title: " + document.title);
 
-        // change page title from global var
-        document.title = (title || document.title);
-        //console.log("page title: " + document.title);
+            // parse url to jquery
+            /////////Шов//////////////////////
+            loadURL(url + location.search, container);
+            //////////////////////////////////
+        } else {
 
-        // parse url to jquery
-        loadURL(url + location.search, container);
-    } else {
+            // grab the first URL from nav
+            var $this = $('nav > ul > li:first-child > a[href!="#"]');
 
-        // grab the first URL from nav
-        var $this = $('nav > ul > li:first-child > a[href!="#"]');
+            //update hash
+            window.location.hash = $this.attr('href');
 
-        //update hash
-        window.location.hash = $this.attr('href');
+        }
 
     }
-
-}
